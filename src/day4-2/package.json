@@ -1,7 +1,7 @@
 {
-  "name": "day4",
+  "name": "day4-2",
   "version": "1.0.0",
-  "description": "Day 4 of Advent of Code",
+  "description": "Day 4 of Advent of Code, part 2",
   "private": true,
   "engines": {
     "node": ">=12.4.0"
