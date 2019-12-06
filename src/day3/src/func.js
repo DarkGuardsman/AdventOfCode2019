@@ -1,10 +1,17 @@
 import fs from "fs";
 
+//Wire point types
+export const START = '0';
+export const VERTICAL = '|';
+export const HORIZONTAL = '-';
+export const JOINT = '+';
+export const INTERSECTION = 'X';
+
 //Direction constants
-export const UP = Object.freeze({x: 0, y: 1, type: '|'});
-export const DOWN = Object.freeze({x: 0, y: -1, type: '|'});
-export const RIGHT =  Object.freeze({x: 1, y: 0, type: '-'});
-export const LEFT = Object.freeze({x: -1, y: 0, type: '-'});
+export const UP = Object.freeze({x: 0, y: 1, type: HORIZONTAL});
+export const DOWN = Object.freeze({x: 0, y: -1, type: HORIZONTAL});
+export const RIGHT =  Object.freeze({x: 1, y: 0, type: VERTICAL});
+export const LEFT = Object.freeze({x: -1, y: 0, type: VERTICAL});
 
 /**
  * Loads the data from the file
@@ -76,7 +83,7 @@ export function plotData(wire) {
     let pos = {x: 0, y: 0};
 
     //Init points
-    wire.points = [{x: 0, y: 0, type: 'O'}];
+    wire.points = [{x: 0, y: 0, type: START}];
 
     //Generate point data from nodes
     wire.nodes.forEach(node => pathNode(pos, node, wire.points));
@@ -96,7 +103,7 @@ export function pathNode(pos, node, pointsOut) {
         step(pos, direction, 1);
 
         //Push position to out
-        pointsOut.push({...pos, type: (d === (distance - 1) ? '+' : direction.type)});
+        pointsOut.push({...pos, type: (d === (distance - 1) ? JOINT : direction.type)});
     }
 }
 

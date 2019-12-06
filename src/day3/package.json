@@ -34,7 +34,8 @@
     "src/**"
   ],
   "dependencies": {
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "lodash": "latest"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
