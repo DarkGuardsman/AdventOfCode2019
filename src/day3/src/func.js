@@ -1,5 +1,11 @@
 import fs from "fs";
 
+//Direction constants
+export const UP = Object.freeze({x: 0, y: 1, type: '|'});
+export const DOWN = Object.freeze({x: 0, y: -1, type: '|'});
+export const RIGHT =  Object.freeze({x: 1, y: 0, type: '-'});
+export const LEFT = Object.freeze({x: -1, y: 0, type: '-'});
+
 /**
  * Loads the data from the file
  * @param filePath
@@ -22,16 +28,21 @@ export function processFileString(data) {
     //Convert lines to wire objects for easier processing
     const wires = [];
     for (let i = 0; i < lines.length; i++) {
-        const wire = {};
+        const line = lines[i];
 
-        //Setup an id for debug
-        wire.id = i;
+        //Ignore empty lines
+        if(line.trim() !== "") {
+            const wire = {};
 
-        //Load nodes
-        wire.nodes = lines[i].split(",").map(n => n.trim());
+            //Setup an id for debug
+            wire.id = i;
 
-        //Push to array
-        wires.push(wire);
+            //Load nodes
+            wire.nodes = line.split(",").map(n => n.trim());
+
+            //Push to array
+            wires.push(wire);
+        }
     }
 
     return wires;
@@ -65,7 +76,7 @@ export function plotData(wire) {
     let pos = {x: 0, y: 0};
 
     //Init points
-    wire.points = [];
+    wire.points = [{x: 0, y: 0, type: 'O'}];
 
     //Generate point data from nodes
     wire.nodes.forEach(node => pathNode(pos, node, wire.points));
@@ -85,7 +96,7 @@ export function pathNode(pos, node, pointsOut) {
         step(pos, direction, 1);
 
         //Push position to out
-        pointsOut.push({...pos});
+        pointsOut.push({...pos, type: (d === (distance - 1) ? '+' : direction.type)});
     }
 }
 
@@ -108,13 +119,13 @@ export function step(pos, direction, distance = 1) {
  */
 export function moveVector(node) {
     if (node.startsWith("U")) {
-        return {x: 0, y: 1};
+        return UP;
     } else if (node.startsWith("D")) {
-        return {x: 0, y: -1};
+        return DOWN;
     } else if (node.startsWith("R")) {
-        return {x: 1, y: 0};
+        return RIGHT;
     } else if (node.startsWith("L")) {
-        return {x: -1, y: 0};
+        return LEFT;
     } else {
         throw new Error(`Invalid vector start ${node}`);
     }
