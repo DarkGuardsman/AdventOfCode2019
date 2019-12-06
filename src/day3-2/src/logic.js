@@ -9,12 +9,19 @@ export function run(filePath) {
     const wires = preProcess(filePath);
 
     //Debug
-    console.log("Pre Processing Done:");
+    console.log("Wire Data:");
     wires.forEach(wire => {
         console.log(`\tWire[${wire.id}] has ${wire.points.length} points`);
     });
 
-    const intersections = findIntersections(wires).sort(sortByDistance);
+    const intersections = findIntersections(wires).sort(sortBySteps);
+
+    //Debug
+    console.log("Intersections:");
+    intersections.forEach(point => {
+        console.log('\t', point);
+    });
+
     return intersections.length > 0 ? intersections[0] : undefined;
 }
 
@@ -60,7 +67,7 @@ export function getIntersections(wireA, wireB) {
     wireB.pointHashMap = buildHashMap( wireB.points);
 
     //Filter down to matches, copy each math to prevent data contamination, and set each copy as an intersection type
-    return wireA.points.filter(point => point.type !== START && containsPoint(wireB, point)).map(convertToIntersection);
+    return wireA.points.filter(point => point.type !== START && containsPoint(wireB, point)).map(p => convertToIntersection(p, wireB));
 }
 
 /*export function hashPoint(p) {
@@ -71,27 +78,28 @@ export function getIntersections(wireA, wireB) {
 }*/
 
 export function buildHashMap(points) {
-    const map = new Map();
+    const xMap = new Map();
 
     points.forEach(p => {
-        if(map.has(p.x)) {
-            const set = map.get(p.x);
-            set.add(p.y);
+        if(xMap.has(p.x)) {
+            const yMap = xMap.get(p.x);
+            yMap.set(p.y, p.step);
         } else {
-            const set = new Set();
-            set.add(p.y);
-            map.set(p.x, set);
+            const yMap = new Map();
+            yMap.set(p.y, p.step);
+            xMap.set(p.x, yMap);
         }
     });
 
-    return map;
+    return xMap;
 }
 
 /** Converts the point to an intersection point by setting type to X and calculating distance */
-export function convertToIntersection(point) {
+export function convertToIntersection(point, wireData) {
     const distance = calculateDistance({x: 0, y: 0}, point);
     return {
         ...point,
+        step: (point.step + wireData.pointHashMap.get(point.x).get(point.y)),
         distance,
         type: INTERSECTION
     };
@@ -110,6 +118,6 @@ export function calculateDistance(pointA, pointB) {
     return Math.abs(deltaX) + Math.abs(deltaY);
 }
 
-export function sortByDistance(pointA, pointB) {
-    return pointA.distance - pointB.distance;
+export function sortBySteps(pointA, pointB) {
+    return pointA.step - pointB.step;
 }
