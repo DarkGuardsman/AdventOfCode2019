@@ -130,9 +130,9 @@ describe('moveDistance', () => {
 //Tests the we can step forward based on the direction & distance
 describe('step', () => {
     const testCases = [
-        [{x: 0, y: 0}, {x: 0, y: 1}, 1, {x: 0, y: 1}],
-        [{x: 120, y: 456}, {x: 1, y: 0}, 1, {x: 121, y: 456}],
-        [{x: 120, y: 456}, {x: -1, y: 0}, 20, {x: 100, y: 456}]
+        [{x: 0, y: 0, step: 0}, {x: 0, y: 1}, 1, {x: 0, y: 1, step: 1}],
+        [{x: 120, y: 456, step: 0}, {x: 1, y: 0}, 1, {x: 121, y: 456, step: 1}],
+        [{x: 120, y: 456, step: 0}, {x: -1, y: 0}, 20, {x: 100, y: 456, step: 20}]
     ];
 
     test.each(testCases)('Given start(%p) direction{%p) distance(%p) my position should be %p', (pos, direction, distance, end) => {
@@ -147,17 +147,17 @@ describe('step', () => {
 //Tests that we can path an entire node (aka generating point data)
 describe('pathNode', () => {
     const testCases = [
-        [{x: 0, y: 0}, {direction: UP, distance: 3, data: "U3", id: 0},
-            [{x: 0, y: 1, type: '|'}, {x: 0, y: 2, type: '|'}, {x: 0, y: 3, type: '+'}]],
+        [{x: 0, y: 0, step: 0}, {direction: UP, distance: 3, data: "U3", id: 0},
+            [{x: 0, y: 1, step: 1, type: '|'}, {x: 0, y: 2, step: 2, type: '|'}, {x: 0, y: 3, step: 3, type: '+'}]],
 
-        [{x: 0, y: 0}, {direction: DOWN, distance: 3, data: "D3", id: 0},
-            [{x: 0, y: -1, type: '|'}, {x: 0, y: -2, type: '|'}, {x: 0, y: -3, type: '+'}]],
+        [{x: 0, y: 0, step: 0}, {direction: DOWN, distance: 3, data: "D3", id: 0},
+            [{x: 0, y: -1, step: 1, type: '|'}, {x: 0, y: -2, step: 2, type: '|'}, {x: 0, y: -3, step: 3, type: '+'}]],
 
-        [{x: 0, y: 0}, {direction: RIGHT, distance: 3, data: "R3", id: 0},
-            [{x: 1, y: 0, type: '-'}, {x: 2, y: 0, type: '-'}, {x: 3, y: 0, type: '+'}]],
+        [{x: 0, y: 0, step: 0}, {direction: RIGHT, distance: 3, data: "R3", id: 0},
+            [{x: 1, y: 0, step: 1, type: '-'}, {x: 2, y: 0, step: 2, type: '-'}, {x: 3, y: 0, step: 3, type: '+'}]],
 
-        [{x: 0, y: 0}, {direction: LEFT, distance: 3, data: "L3", id: 0},
-            [{x: -1, y: 0, type: '-'}, {x: -2, y: 0, type: '-'}, {x: -3, y: 0, type: '+'}]],
+        [{x: 0, y: 0, step: 0}, {direction: LEFT, distance: 3, data: "L3", id: 0},
+            [{x: -1, y: 0, step: 1, type: '-'}, {x: -2, y: 0, step: 2, type: '-'}, {x: -3, y: 0, step: 3, type: '+'}]],
     ];
 
     test.each(testCases)('Given start(%p) node{%p) my points should be %p', (start, node, points) => {
@@ -189,13 +189,13 @@ it('plotData', () => {
                 {direction: RIGHT, distance: 3, data: "R3", id: 1}
             ],
             points: [
-                {x: 0, y: 0, type: START},
-                {x: 0, y: 1, type: VERTICAL},
-                {x: 0, y: 2, type: VERTICAL},
-                {x: 0, y: 3, type: JOINT},
-                {x: 1, y: 3, type: HORIZONTAL},
-                {x: 2, y: 3, type: HORIZONTAL},
-                {x: 3, y: 3, type: JOINT},
+                {x: 0, y: 0, step: 0, type: START},
+                {x: 0, y: 1, step: 1, type: VERTICAL},
+                {x: 0, y: 2, step: 2, type: VERTICAL},
+                {x: 0, y: 3, step: 3, type: JOINT},
+                {x: 1, y: 3, step: 4, type: HORIZONTAL},
+                {x: 2, y: 3, step: 5, type: HORIZONTAL},
+                {x: 3, y: 3, step: 6, type: JOINT},
             ]
         }
     )

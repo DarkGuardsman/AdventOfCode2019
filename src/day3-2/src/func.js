@@ -80,10 +80,10 @@ export function convertNode(str, index) {
  * @param wire - {id: 0, nodes: []}
  */
 export function plotData(wire) {
-    let pos = {x: 0, y: 0};
+    let pos = {x: 0, y: 0, step: 0};
 
     //Init points
-    wire.points = [{x: 0, y: 0, type: START}];
+    wire.points = [{x: 0, y: 0, step: 0, type: START}];
 
     //Generate point data from nodes
     wire.nodes.forEach(node => pathNode(pos, node, wire.points));
@@ -114,6 +114,11 @@ export function pathNode(pos, node, pointsOut) {
  * @param distance - distance to move, defaults to 1
  */
 export function step(pos, direction, distance = 1) {
+
+    //track distance
+    pos.step += distance;
+
+    //Move position
     pos.x += direction.x * distance;
     pos.y += direction.y * distance;
 }
