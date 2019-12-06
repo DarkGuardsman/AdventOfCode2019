@@ -1,7 +1,7 @@
 import {
     convertData,
     convertNode,
-    DOWN,
+    DOWN, HORIZONTAL, JOINT,
     LEFT,
     loadData,
     moveDistance,
@@ -9,9 +9,9 @@ import {
     pathNode,
     plotData,
     processFileString,
-    RIGHT,
+    RIGHT, START,
     step,
-    UP
+    UP, VERTICAL
 } from "./func";
 
 const expectedWireTest1 = [
@@ -149,10 +149,13 @@ describe('pathNode', () => {
     const testCases = [
         [{x: 0, y: 0}, {direction: UP, distance: 3, data: "U3", id: 0},
             [{x: 0, y: 1, type: '|'}, {x: 0, y: 2, type: '|'}, {x: 0, y: 3, type: '+'}]],
+
         [{x: 0, y: 0}, {direction: DOWN, distance: 3, data: "D3", id: 0},
             [{x: 0, y: -1, type: '|'}, {x: 0, y: -2, type: '|'}, {x: 0, y: -3, type: '+'}]],
+
         [{x: 0, y: 0}, {direction: RIGHT, distance: 3, data: "R3", id: 0},
             [{x: 1, y: 0, type: '-'}, {x: 2, y: 0, type: '-'}, {x: 3, y: 0, type: '+'}]],
+
         [{x: 0, y: 0}, {direction: LEFT, distance: 3, data: "L3", id: 0},
             [{x: -1, y: 0, type: '-'}, {x: -2, y: 0, type: '-'}, {x: -3, y: 0, type: '+'}]],
     ];
@@ -186,13 +189,13 @@ it('plotData', () => {
                 {direction: RIGHT, distance: 3, data: "R3", id: 1}
             ],
             points: [
-                {x: 0, y: 0, type: 'O'},
-                {x: 0, y: 1, type: '|'},
-                {x: 0, y: 2, type: '|'},
-                {x: 0, y: 3, type: '+'},
-                {x: 1, y: 3, type: '-'},
-                {x: 2, y: 3, type: '-'},
-                {x: 3, y: 3, type: '+'},
+                {x: 0, y: 0, type: START},
+                {x: 0, y: 1, type: VERTICAL},
+                {x: 0, y: 2, type: VERTICAL},
+                {x: 0, y: 3, type: JOINT},
+                {x: 1, y: 3, type: HORIZONTAL},
+                {x: 2, y: 3, type: HORIZONTAL},
+                {x: 3, y: 3, type: JOINT},
             ]
         }
     )

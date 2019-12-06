@@ -8,10 +8,10 @@ export const JOINT = '+';
 export const INTERSECTION = 'X';
 
 //Direction constants
-export const UP = Object.freeze({x: 0, y: 1, type: HORIZONTAL});
-export const DOWN = Object.freeze({x: 0, y: -1, type: HORIZONTAL});
-export const RIGHT =  Object.freeze({x: 1, y: 0, type: VERTICAL});
-export const LEFT = Object.freeze({x: -1, y: 0, type: VERTICAL});
+export const UP = Object.freeze({x: 0, y: 1, type: VERTICAL});
+export const DOWN = Object.freeze({x: 0, y: -1, type: VERTICAL});
+export const RIGHT =  Object.freeze({x: 1, y: 0, type: HORIZONTAL});
+export const LEFT = Object.freeze({x: -1, y: 0, type: HORIZONTAL});
 
 /**
  * Loads the data from the file

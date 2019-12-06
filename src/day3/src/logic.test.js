@@ -1,25 +1,27 @@
-import {containsPoint, findIntersections, getIntersections, run} from './logic';
+import {buildHashMap, containsPoint, findIntersections, getIntersections, hashPoint, run} from './logic';
 import {INTERSECTION} from "./func";
 import {wireA, wireB, wireC, wireD} from "./test_data";
 
-
 it('data set 1 should output 159', () => {
     const result = run('./data.test.1.txt');
-    expect(result).toBe(159);
+    expect(result.distance).toBe(159);
 });
 
 it('data set 2 should output 135', () => {
     const result = run('./data.test.2.txt');
-    expect(result).toBe(135);
+    expect(result.distance).toBe(135);
 });
 
 //Check that contains point works as expected
 describe('containsPoint', () => {
+    const points = [
+        {x: 0, y: 0},
+        {x: 22, y: 22}
+    ];
+
     const wire = {
-        points: [
-            {x: 0, y: 0},
-            {x: 22, y: 22}
-        ]
+        points: points,
+        pointHashMap: buildHashMap(points)
     };
 
     const testCases = [
@@ -37,11 +39,7 @@ describe('containsPoint', () => {
         [{x: 0, y: 1}, false],
         [{x: 0, y: -1}, false],
         [{x: 1, y: 0}, false],
-        [{x: -1, y: 0}, false],
-
-        //Negative cases that shouldn't happen
-        [{x: undefined, y: undefined}, false],
-        [{x: null, y: null}, false],
+        [{x: -1, y: 0}, false]
     ];
 
     test.each(testCases)('Wire contains %p should be %p', (point, out) => {
@@ -54,7 +52,7 @@ describe('containsPoint', () => {
 it('wires intersect', () => {
     const result = getIntersections(wireA, wireB);
     expect(result).toEqual([
-        {x: 3, y: 3, type: INTERSECTION}
+        {x: 3, y: 3, type: INTERSECTION, distance: 6}
     ]);
 });
 
@@ -64,14 +62,12 @@ it('wires not intersect', () => {
     expect(result).toEqual([]);
 });
 
-
-
 //Check we can detect intersecting wires
 describe('findIntersections', () => {
     it('2 wires 1 hit 1 overlays 0 ignored', () => {
         const result = findIntersections([wireA, wireB]);
         expect(result).toEqual([
-            {x: 3, y: 3, type: INTERSECTION}
+            {x: 3, y: 3, type: INTERSECTION, distance: 6}
         ]);
     });
 
@@ -83,8 +79,8 @@ describe('findIntersections', () => {
     it('4 wires 2 hits 2 overlays 1 ignored', () => {
         const result = findIntersections([wireA, wireC, wireB, wireD]);
         expect(result).toEqual([
-            {x: 3, y: 3, type: INTERSECTION},
-            {x: 3, y: 2, type: INTERSECTION}
+            {x: 3, y: 3, type: INTERSECTION, distance: 6},
+            {x: 3, y: 2, type: INTERSECTION, distance: 5}
         ]);
     });
 });
