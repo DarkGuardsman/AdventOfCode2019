@@ -40,11 +40,16 @@ describe('hasDoubleNumbers', () => {
         ['10', false],
         ['123456', false],
         ['1234560', false],
+        ['222', false],
+        ['123444', false],
 
         ['1234566', true],
         ['22', true],
-        ['222', true],
-        ['1235560', true]
+        ['112233', true],
+        ['1235560', true],
+        ['111122', true],
+        ['112233', true],
+        ['1144456', true]
     ];
 
     test.each(testCases)('Given %p I expect %p', (input, out) => {
