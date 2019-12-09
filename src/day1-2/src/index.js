@@ -1,4 +1,4 @@
-import {calculateFuelForModules, convertDataToNumbers} from "./func";
+import {calculateFuelForFuel, calculateFuelForModules, convertDataToNumbers} from "./func";
 import fs from 'fs';
 import minimist from 'minimist';
 
@@ -22,9 +22,6 @@ const lines = convertDataToNumbers(data);
 console.log('Lines:', lines.length);
 
 //Part 1 calculation
-console.log('\nCalculating Fuel for Modules:');
+console.log('\nCalculating Fuel:');
 let fuelForMass = calculateFuelForModules(lines);
-console.log("\tFuel for Mass", fuelForMass);
-
-//Part 2 calculation
-console.log('\nCalculating Fuel for Fuel:');
+console.log("\tTotal: ", fuelForMass);

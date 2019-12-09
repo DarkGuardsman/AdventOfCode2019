@@ -15,7 +15,35 @@ export function convertDataToNumbers(data) {
  * @returns {*}
  */
 export function calculateFuelForModules(modules) {
-    return modules.map(calculateFuelRequired).reduce((a, b) => a + b, 0);
+    return modules.map( mass => {
+        let fuel = calculateFuelRequired(mass);
+        fuel += calculateFuelForFuel(fuel);
+        return fuel;
+    }).reduce((a, b) => a + b, 0);
+}
+
+/**
+ * Calculates the fuel required for the fuel needed. This
+ * will recalculate several times as each fuel step needs
+ * more fuel until it hits a point that zero fuel is required
+ * for the fule provided.
+ *
+ * This, however, is not a recursive function.
+ *
+ * @param fuel - starting amount
+ *
+ * @return {number} fuel needed for fuel provided
+ */
+export function calculateFuelForFuel(fuel) {
+    let fuelLast = fuel;
+    let fuelNeeded = 0;
+
+    while(fuelLast > 0) {
+        fuelLast = calculateFuelRequired(fuelLast);
+        fuelNeeded += fuelLast;
+    }
+
+    return fuelNeeded;
 }
 
 /**
